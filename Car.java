@@ -136,9 +136,7 @@ public class Car {
             }
         }
     }
-    //   public static void main(String[] args) {
-    //     SwingUtilities.invokeLater(Car::new);
-    //}
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Car car = new Car();
