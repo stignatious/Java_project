@@ -24,11 +24,12 @@ public class JavaProject extends JFrame
         f.add(panel2).setBounds(200, 100, 500, 400);
         JButton my_button = new JButton("submit");
         JLabel my_icon_label = new JLabel();
+        /*String country[] = {"Kenya", "Uganda", "Ethiopia", "Eritrea", "Tanzania"};*/
+        /*JComboBox<String> comboBox1 = new JComboBox<>(country);*/
+        /*panel.add(comboBox1);*/
         JLabel carName = new JLabel("enter the name of the car");
         carName.setBounds(110, 10, 200, 50);
-        //JTextField my_carName = new JTextField();
-        String[] country = {"Kenya", "Uganda", "Ethiopia", "Eritrea", "Tanzania"};
-        JComboBox<String> my_carName = new JComboBox<>(country);
+        JTextField my_carName = new JTextField();
         my_carName.setBounds(110, 50, 200, 50);
         JLabel carModel = new JLabel("enter the car model");
         carModel.setBounds(110, 100, 200, 50);
@@ -56,15 +57,21 @@ public class JavaProject extends JFrame
             public void actionPerformed(ActionEvent actionEvent) {
                 ImageIcon icon = myWindowImage("images.jpeg");
                 my_icon_label.setIcon(icon);
-                String comboValue = my_carName.getSelectedItem().toString();
-                String carModelValue = carModel.getText();
-                String carOwnerValue = the_carOwner.getText();
-                int myCarPriceValue = Integer.parseInt(the_carPrice.getText());
-                JOptionPane.showMessageDialog(panel2, "The car selected :" + comboValue + "\n Model of the car :" + carModelValue + "\n The owner of the car : " + carOwnerValue + "\n Price of the car :" + myCarPriceValue);
+                JavaProject m = new JavaProject();
+                m.myDisplay();
             }
         });
         panel1.add(my_icon_label);
         panel.add(my_button);
+    }
+
+    private void myDisplay() {
+        System.out.println("my name is Anthony");
+    }
+
+    static Component display(){
+        System.out.println("the car that i have bought is volvo");
+        return null;
     }
     public ImageIcon myWindowImage(String my_image_location)
     {
