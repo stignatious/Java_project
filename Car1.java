@@ -97,10 +97,14 @@ public class Car1 {
                     }
                 }
             });
+	    JLable myImageDisplay = new JLable();
+	    carData.this.add(myImageDisplay);
             addcarCarButton = new JButton("Add Car");
             addcarCarButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+		    ImageIcon icon = myWindowImage("images.jpeg");
+		    myImageDisplay.setIcon(icon)
                     String model = (String) car_Modeldropdown.getSelectedItem();
                     String name = (String) car_Namedropdown.getSelectedItem();
                     String owner = car_Ownerfield.getText();
@@ -169,6 +173,15 @@ public class Car1 {
                 Car_data_Display.append("Model: \n" + car.getCar_Model() + ", Name:\n " + car.getCar_Name() + ", Price: KSH\n" + car.getCar_Price() + ", Owner:\n " + car.getCar_Owner() + "\n");
             }
         }
+    }
+    public ImageIcon myWindowImage(String path){
+	    java.net.Url imagePhoto = getClass().getResources(path);
+	    if (imagePhoto != 0){
+		    return new ImageIcon(imagePhoto);
+	    else {
+		    print("The image does not exist"+ path);
+	    }
+	    }
     }
 
     public static void main(String[] args) {
