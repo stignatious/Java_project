@@ -188,7 +188,5 @@ public class Car1 {
         SwingUtilities.invokeLater(() -> {
             Car1 car = new Car1();
             car.new CarData();
-           // JOptionPane.showMessageDialog(Car1.this, "Car added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        });
     }
 }

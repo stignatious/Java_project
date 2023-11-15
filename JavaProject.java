@@ -22,27 +22,55 @@ public class JavaProject extends JFrame
         f.add(panel).setBounds(0, 0, 400, 1000);
         f.add(panel1).setBounds(200, 0, 800, 400);
         f.add(panel2).setBounds(200, 100, 500, 400);
+        panel.setLayout(new GridLayout(8, 2));
         JButton my_button = new JButton("submit");
         JLabel my_icon_label = new JLabel();
         JLabel carName = new JLabel("enter the name of the car");
-        carName.setBounds(110, 10, 200, 50);
+        carName.setBounds(110, 10, 200, 30);
         //JTextField my_carName = new JTextField();
-        String[] country = {"Kenya", "Uganda", "Ethiopia", "Eritrea", "Tanzania"};
-        JComboBox<String> my_carName = new JComboBox<>(country);
-        my_carName.setBounds(110, 50, 200, 50);
+        JComboBox<String> my_carName = new JComboBox<>();
+        //my_carName.setBounds(110, 50, 200, 50);
         JLabel carModel = new JLabel("enter the car model");
-        carModel.setBounds(110, 100, 200, 50);
-        JTextField my_carModel =  new JTextField();
-        my_carModel.setBounds(110, 150, 200, 50);
-        JLabel carOwner = new JLabel("enter the name of the car owner");
-        carOwner.setBounds(110, 200, 300, 50);
+        carModel.setBounds(110, 100, 200, 30);
+        //JTextField my_carModel =  new JTextField();
+        String[] carType = {"SUV", "Covertible", "Toyota", "Isuzu", "Mitsubishi", "Lexus", "Honda"};
+        JComboBox<String> my_carModel = new JComboBox<>(carType);
+        my_carModel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                String  inputSelected = (String) my_carModel.getSelectedItem();
+                my_carName.removeAllItems();
+                if("Toyota".equals(inputSelected)){
+                    my_carName.addItem("hyundai");
+                    my_carName.addItem("Landcruiser");
+                    my_carName.addItem("Harrier");
+                    my_carName.addItem("Probox");
+                    my_carName.addItem("vitz");
+                    my_carName.addItem("Alphard");
+                } else if ("Isuzu".equals(inputSelected)) {
+                    my_carName.addItem("DMAX");
+                    my_carName.addItem("OFFROAD");
+                    my_carName.addItem("Wide Load Truck");
+                } else if ("Lexus".equals(inputSelected)) {
+                    my_carName.addItem("LX 570");
+                    my_carName.addItem("LX 1250");
+                    my_carName.addItem("SUV");
+                }
+            }
+        });
+        my_carModel.setBounds(110, 150, 200, 30);
+        JLabel carOwner = new JLabel("enter the name of the car owner\n");
+        carOwner.setBounds(110, 200, 350, 30);
         JTextField the_carOwner = new JTextField();
-        the_carOwner.setBounds(110, 250, 200, 50);
-        JLabel carPrice = new JLabel("Price of the car");
-        carPrice.setBounds(110,300, 350, 50);
-        JTextField the_carPrice = new JTextField();
-        the_carPrice.setBounds(110,350, 200, 50);
-        my_button.setBounds(110, 400, 150, 50);
+        the_carOwner.setBounds(110, 250, 200, 30);
+        JLabel carPrice = new JLabel("\nPrice of the car");
+        carPrice.setBounds(110,300, 400, 30);
+        Integer[] originalPrice = {2000000, 3000000, 400000, 500000};
+        JComboBox<Integer> the_carPrice;
+        the_carPrice = new JComboBox<>(originalPrice);
+        //JTextField the_carPrice = new JTextField();
+        the_carPrice.setBounds(110,350, 200, 30);
+        my_button.setBounds(110, 400, 150, 30);
         panel.add(carName);
         panel.add(carModel);
         panel.add(carOwner);
@@ -59,7 +87,7 @@ public class JavaProject extends JFrame
                 String comboValue = my_carName.getSelectedItem().toString();
                 String carModelValue = carModel.getText();
                 String carOwnerValue = the_carOwner.getText();
-                int myCarPriceValue = Integer.parseInt(the_carPrice.getText());
+                int myCarPriceValue = Integer.parseInt("" + the_carPrice.getSelectedItem());
                 JOptionPane.showMessageDialog(panel2, "The car selected :" + comboValue + "\n Model of the car :" + carModelValue + "\n The owner of the car : " + carOwnerValue + "\n Price of the car :" + myCarPriceValue);
             }
         });
