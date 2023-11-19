@@ -24,7 +24,7 @@ public class JavaProject extends JFrame
         f.add(panel).setBounds(0, 0, 400, 1000);
         f.add(panel1).setBounds(200, 0, 800, 400);
         f.add(panel2).setBounds(200, 100, 500, 400);
-        panel.setLayout(new GridLayout(8, 1));
+        panel.setLayout(new GridLayout(16, 2));
         JLabel output = new JLabel("The Image of the Car selected will pop here");
         output.setBounds(700, 0, 300, 50);
         panel1.add(output);
