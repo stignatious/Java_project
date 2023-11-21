@@ -3,6 +3,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
+
 public class JavaProject extends JFrame
 {
     JavaProject()
@@ -18,11 +20,20 @@ public class JavaProject extends JFrame
         JPanel panel2 = new JPanel();
         panel.setBackground(Color.CYAN);
         panel1.setBackground(Color.YELLOW);
-        panel2.setBackground(Color.DARK_GRAY);
+        panel2.setBackground(Color.BLUE);
         f.add(panel).setBounds(0, 0, 400, 1000);
         f.add(panel1).setBounds(200, 0, 800, 400);
         f.add(panel2).setBounds(200, 100, 500, 400);
-        panel.setLayout(new GridLayout(8, 2));
+        panel.setLayout(new GridLayout(16, 2));
+        JLabel output = new JLabel("The Image of the Car selected will pop here");
+        output.setBounds(700, 0, 300, 50);
+        panel1.add(output);
+        Font myFont = new Font("Serif", Font.BOLD, 15);
+        output.setFont(myFont);
+        JLabel myThirdLab = new JLabel("the Information of the car you have selected will pop up here");
+        myThirdLab.setFont(myFont);
+        panel2.add(myThirdLab);
+        myThirdLab.setBounds(600, 600, 200, 50);
         JButton my_button = new JButton("submit");
         JLabel my_icon_label = new JLabel();
         JLabel carName = new JLabel("enter the name of the car");
@@ -64,7 +75,7 @@ public class JavaProject extends JFrame
         JTextField the_carOwner = new JTextField();
         the_carOwner.setBounds(110, 250, 200, 30);
         JLabel carPrice = new JLabel("\nPrice of the car");
-        carPrice.setBounds(110,300, 400, 30);
+        carPrice.setBounds(110,400, 400, 30);
         Integer[] originalPrice = {2000000, 3000000, 400000, 500000};
         JComboBox<Integer> the_carPrice;
         the_carPrice = new JComboBox<>(originalPrice);
@@ -84,13 +95,14 @@ public class JavaProject extends JFrame
             public void actionPerformed(ActionEvent actionEvent) {
                 ImageIcon icon = myWindowImage("images.jpeg");
                 my_icon_label.setIcon(icon);
-                String comboValue = my_carName.getSelectedItem().toString();
-                String carModelValue = carModel.getText();
+                String comboValue = Objects.requireNonNull(my_carName.getSelectedItem()).toString();
+                String carModelValue = (String) my_carModel.getSelectedItem();
                 String carOwnerValue = the_carOwner.getText();
                 int myCarPriceValue = Integer.parseInt("" + the_carPrice.getSelectedItem());
                 JOptionPane.showMessageDialog(panel2, "The car selected :" + comboValue + "\n Model of the car :" + carModelValue + "\n The owner of the car : " + carOwnerValue + "\n Price of the car :" + myCarPriceValue);
             }
         });
+        my_icon_label.setBounds(700, 300, 200, 50);
         panel1.add(my_icon_label);
         panel.add(my_button);
     }
@@ -106,6 +118,6 @@ public class JavaProject extends JFrame
         }
     }
     public static void main(String[] args) {
-        new JavaProject();
+        SwingUtilities.invokeLater(() -> new JavaProject());
     }
 }
