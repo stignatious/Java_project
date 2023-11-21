@@ -1,26 +1,152 @@
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class Car1 {
-    private String carModel;
-    private String carName;
-    private Image carImage;
-
-    public Car1(String carModel, String carName, Image carImage) {
-        this.carModel = carModel;
-        this.carName = carName;
-        this.carImage = carImage;
-    }
+// CREATE A FRAME FOR THE USER GUI
+public class Car1 extends JFrame {
+    private ArrayList<Car> cars = new ArrayList<>();
+    private JComboBox<String> carModelDropdown;
+    private JTextField carNameField;
+    private JTextField carOwnerField;
+    private JTextField carPriceField;
+    private JTextArea carDataDisplay;
+    private JButton addCarButton;
+    private JLabel carImageLabel;
 
     public Car1() {
+        setTitle("GROUP 7 CAR MANAGEMENT SYSTEM");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(600, 400);
+
+        carModelDropdown = new JComboBox<>(new String[]{"JAGUAR", "FORD", " PAGANI","PORSCHE","SUBARU", "Toyota", "Mazda", "Mitsubishi", "Lexus", "ISUZU", "Honda", "Mercedes"});
+        carNameField = new JTextField(15);
+        carOwnerField = new JTextField(15);
+        carPriceField = new JTextField(15);
+        carDataDisplay = new JTextArea(15, 40);
+        carDataDisplay.setEditable(false);
+        addCarButton = new JButton("SUBMIT CAR DETAILS");
+        carImageLabel = new JLabel();
+
+        carModelDropdown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateCarImageDisplay();  // Update the car image when the car model is selected
+            }
+        });
+
+        addCarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addCar();
+            }
+        });
+
+        setLayout(new BorderLayout());
+        add(createUserDetailsPanel(), BorderLayout.NORTH);
+        add(createUserEntryPanel(), BorderLayout.CENTER);
+        add(createOutputPanel(), BorderLayout.SOUTH);
+
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
-    public Car1(Object model, String name, String image) {
+    private JPanel createUserDetailsPanel() {
+        JPanel userDetailsPanel = new JPanel();
+        userDetailsPanel.setBackground(Color.pink);
+        userDetailsPanel.setLayout(new GridLayout(4, 2));
+        userDetailsPanel.add(new JLabel("Car Model:"));
+        userDetailsPanel.add(carModelDropdown);
+        userDetailsPanel.add(new JLabel("Car Name:"));
+        userDetailsPanel.add(carNameField);
+        userDetailsPanel.add(new JLabel("Car Owner:"));
+        userDetailsPanel.add(carOwnerField);
+        userDetailsPanel.add(new JLabel("Add Price:"));
+        userDetailsPanel.add(carPriceField);
+        return userDetailsPanel;
+    }
+
+    private JPanel createUserEntryPanel() {
+        JPanel userEntryPanel = new JPanel();
+        userEntryPanel.setBackground(Color.ORANGE);
+        userEntryPanel.setLayout(new FlowLayout());
+        userEntryPanel.add(addCarButton);
+        userEntryPanel.add(carImageLabel);  // Add the JLabel for displaying the car image
+        return userEntryPanel;
+    }
+
+    private JPanel createOutputPanel() {
+        JPanel outputPanel = new JPanel();
+        outputPanel.setBackground(Color.WHITE);
+        outputPanel.add(new JScrollPane(carDataDisplay));
+        return outputPanel;
+    }
+
+    private void addCar() {
+        String model = (String) carModelDropdown.getSelectedItem();
+        String name = carNameField.getText();
+        String owner = carOwnerField.getText();
+        String price = carPriceField.getText();
+
+        // Restricting the car price to integer data type only
+        try{
+            Integer.parseInt(price);
+        }
+        catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error: Car price can only contain didgits between 0 - 9", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (model.isEmpty() || name.isEmpty() || owner.isEmpty() || price.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Error: Please fill all the required fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+// Here is the section for getting the Selected car image path
+        ImageIcon placeholderIcon = new ImageIcon(new ImageIcon("C:\\Users\\Son Of Nations\\Downloads\\Project photos").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+
+        Car car = new Car(model, name, owner, price);
+        cars.add(car);
+        updateCarInfoDisplay();
+        updateCarImageDisplay(placeholderIcon);
+    }
+
+    private void updateCarInfoDisplay() {
+        carDataDisplay.setText("Car Information:\n");
+        for (Car car : cars) {
+            carDataDisplay.append("Model: \n" + car.getCarModel()  + ", Name:\n " + car.getCarName() +
+                    ", Owner: \n" + car.getCarOwner() + ", Price: \n" + car.getCarPrice() + "\n");
+        }
+    }
+// update the car image display
+    private void updateCarImageDisplay(ImageIcon icon) {
+        carImageLabel.setIcon(icon);
+    }
+
+    private void updateCarImageDisplay() {
+        // Implement the logic to update the car image based on the selected car model
+
+        ImageIcon placeholderIcon = new ImageIcon(new ImageIcon("C:\\Users\\Son Of Nations\\Downloads\\Project photos").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        updateCarImageDisplay(placeholderIcon);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new Car1());
+    }
+}
+
+class Car {
+    private String carModel;
+    private String carName;
+    private String carOwner;
+    private String carPrice;
+
+    public Car(String carModel, String carName, String carOwner, String carPrice) {
+        this.carModel = carModel;
+        this.carName = carName;
+        this.carOwner = carOwner;
+        this.carPrice = carPrice;
     }
 
     public String getCarModel() {
@@ -31,152 +157,11 @@ public class Car1 {
         return carName;
     }
 
-    public Image getCarImage() {
-        return carImage;
+    public String getCarOwner() {
+        return carOwner;
     }
 
-    public class CarDataGUI extends JFrame {
-        private ArrayList<Car1> cars = new ArrayList<>();
-        private JComboBox<String> carModelDropdown;
-        private JComboBox<String> carNameDropdown;
-        private JTextField carPriceField;
-        private JTextArea carDataDisplay;
-        private JButton addCarButton;
-        private JLabel carImageLabel;
-        private JPanel outputPanel;
-
-        public CarDataGUI() {
-            setTitle("GROUP 7 CAR DATA");
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setSize(500, 400);
-
-            // Let's initialize the components of the GUI
-            carModelDropdown = new JComboBox<>(new String[]{"Toyota", "Mazda", "Mitsubishi", "Lexus", "ISUZU", "Honda", "Mercedes"});
-            carNameDropdown = new JComboBox<>();
-            carPriceField = new JTextField(15);
-            carDataDisplay = new JTextArea(15, 40);
-            carDataDisplay.setEditable(false);
-            outputPanel = new JPanel();  // Initialize outputPanel here
-
-            // Creating an action Listener for the car model dropdown
-            carModelDropdown.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String selectedModel = (String) carModelDropdown.getSelectedItem();
-                    carNameDropdown.removeAllItems();
-                    if ("Toyota".equals(selectedModel)) {
-                        carNameDropdown.addItem("Landcruiser");
-                        carNameDropdown.addItem("Harrier");
-                        carNameDropdown.addItem("Probox");
-                        carNameDropdown.addItem("Vitz");
-                        carNameDropdown.addItem("Alphard");
-                    } else if ("ISUZU".equals(selectedModel)) {
-                        carNameDropdown.addItem("DMAX");
-                        carNameDropdown.addItem("OFFROAD");
-                        carNameDropdown.addItem("Wide Load Truck");
-                    } else if ("Honda".equals(selectedModel)) {
-                        carNameDropdown.addItem("Turbo boost");
-                        carNameDropdown.addItem("Civic");
-                    } else if ("Mitsubishi".equals(selectedModel)) {
-                        carNameDropdown.addItem("Wide load");
-                        carNameDropdown.addItem("OFFROAD");
-                        carNameDropdown.addItem("FUSO");
-                    } else if ("Lexus".equals(selectedModel)) {
-                        carNameDropdown.addItem("LX 570");
-                        carNameDropdown.addItem("LX 1250");
-                        carNameDropdown.addItem("SUV");
-                    } else if ("Mazda".equals(selectedModel)) {
-                        carNameDropdown.addItem("Demio");
-                        carNameDropdown.addItem("Sario");
-                        carNameDropdown.addItem("Double Cabin");
-                    } else if ("Mercedes".equals(selectedModel)) {
-                        carNameDropdown.addItem("G wagon");
-                        carNameDropdown.addItem("E class");
-                        carNameDropdown.addItem("S class");
-                        carNameDropdown.addItem("C class");
-                    }
-
-                    carImageLabel = new JLabel();
-                    JPanel imagePanel = new JPanel();
-                    imagePanel.setBackground(Color.WHITE);
-                    imagePanel.add(carImageLabel);
-                    outputPanel.add(imagePanel, BorderLayout.WEST);
-                }
-            });
-
-            addCarButton = new JButton("Add Car");
-            addCarButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String model = (String) carModelDropdown.getSelectedItem();
-                    String name = (String) carNameDropdown.getSelectedItem();
-
-                    if (model.isEmpty() || name.isEmpty()) {
-                        JOptionPane.showMessageDialog(CarDataGUI.this, "Error: Please fill all the required fields.", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    // Create An image to test
-                    Image lx570 = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
-
-                    Car1 car = new Car1(model, name,lx570);
-                    cars.add(car);
-                    updateCarInfoDisplay();
-                    updateCarImageDisplay();
-                }
-            });
-
-            JPanel userDetailsPanel = new JPanel();
-            userDetailsPanel.setBackground(Color.pink);
-
-            JPanel userEntryPanel = new JPanel();
-            userEntryPanel.setBackground(Color.ORANGE);
-
-            outputPanel.setLayout(new BorderLayout());
-            outputPanel.add(carDataDisplay, BorderLayout.CENTER);
-
-            userDetailsPanel.setLayout(new GridLayout(2, 2));
-            userDetailsPanel.add(new JLabel("User Details:"));
-            userDetailsPanel.add(new JLabel(""));
-            userDetailsPanel.add(new JLabel(""));
-            userDetailsPanel.add(new JLabel(""));
-
-            userEntryPanel.setLayout(new GridLayout(4, 2));
-            userEntryPanel.add(new JLabel("Car Model:"));
-            userEntryPanel.add(carModelDropdown);
-            userEntryPanel.add(new JLabel("Car Name:"));
-            userEntryPanel.add(carNameDropdown);
-            userEntryPanel.add(new JLabel("Car Price:"));
-            userEntryPanel.add(carPriceField);
-            userEntryPanel.add(new JLabel(""));
-            userEntryPanel.add(addCarButton);
-
-            // Add panels to the JFrame
-            add(userDetailsPanel, BorderLayout.NORTH);
-            add(userEntryPanel, BorderLayout.CENTER);
-            add(outputPanel, BorderLayout.SOUTH);
-
-            setLocationRelativeTo(null);
-            setVisible(true);
-        }
-
-        private void updateCarInfoDisplay() {
-            carDataDisplay.setText("Car Information:\n");
-            for (Car1 car : cars) {
-                carDataDisplay.append("Model: " + car.getCarModel() + ", Name: " + car.getCarName() + "\n");
-            }
-        }
-
-        private void updateCarImageDisplay() {
-            Car1 selectedCar = cars.get(cars.size() - 1);
-            carImageLabel.setIcon(new ImageIcon(selectedCar.getCarImage()));
-        }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Car1 car = new Car1();
-            car.new CarDataGUI();
-        });
+    public String getCarPrice() {
+        return carPrice;
     }
 }
