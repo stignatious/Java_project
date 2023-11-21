@@ -78,7 +78,7 @@ public class Car1 extends JFrame {
 
     private JPanel createOutputPanel() {
         JPanel outputPanel = new JPanel();
-        outputPanel.setBackground(Color.WHITE);
+        outputPanel.setBackground(Color.BLUE);
         outputPanel.add(new JScrollPane(carDataDisplay));
         return outputPanel;
     }
